@@ -72,7 +72,7 @@ function services_install($old_revision = 0) {
                     $sql = "INSERT INTO `role_permission` (`rid`, `permission`) VALUES ('$esc_rid', '$esc_perm')";
                     $sql .= " ON DUPLICATE KEY UPDATE rid=rid";
                     $res = mysqli_query($db_connect, $sql);
-                    if (!$res) crm_error(mysqli_error($res));
+                    if (!$res) crm_error(mysqli_error($db_connect));
                 }
             }
         }

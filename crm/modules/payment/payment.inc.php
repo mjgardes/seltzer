@@ -65,7 +65,7 @@ function payment_install($old_revision = 0) {
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         // Set default permissions
         $roles = array(
             '1' => 'authenticated'
@@ -88,7 +88,7 @@ function payment_install($old_revision = 0) {
                     $esc_perm = mysqli_real_escape_string($db_connect, $perm);
                     $sql = "INSERT INTO `role_permission` (`rid`, `permission`) VALUES ('$esc_rid', '$esc_perm')";
                     $res = mysqli_query($db_connect, $sql);
-                    if (!$res) crm_error(mysqli_error($res));
+                    if (!$res) crm_error(mysqli_error($db_connect));
                 }
             }
         }
@@ -361,7 +361,7 @@ function payment_data ($opts = array()) {
         $sql .= " ORDER BY `date` DESC, `created` DESC ";
     }
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     $payments = array();
     $row = mysqli_fetch_assoc($res);
     while ($row) {
@@ -433,7 +433,7 @@ function payment_save ($payment) {
             `pmtid` = '$esc_pmtid'
         ";
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         $payment = module_invoke_api('payment', $payment, 'update');
     } else {
         // Payment does not yet exist, create
@@ -464,7 +464,7 @@ function payment_save ($payment) {
             )
         ";
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         $payment['pmtid'] = mysqli_insert_id($db_connect);
         $payment = module_invoke_api('payment', $payment, 'insert');
     }
@@ -485,7 +485,7 @@ function payment_delete ($pmtid) {
         DELETE FROM `payment`
         WHERE `pmtid`='$esc_pmtid'";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     if (mysqli_affected_rows($db_connect) > 0) {
         message_register('Deleted payment with id ' . $pmtid);
     }
@@ -523,7 +523,7 @@ function payment_accounts ($opts = array()) {
     }
     $sql .= " GROUP BY `credit`, `code` ";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     $db_row = mysqli_fetch_assoc($res);
     while ($db_row) {
         $cid = $db_row['credit'];
@@ -559,7 +559,7 @@ function payment_accounts ($opts = array()) {
     }
     $sql .= " GROUP BY `debit`, `code` ";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     $db_row = mysqli_fetch_assoc($res);
     while ($db_row) {
         // Add all debits to balance owed

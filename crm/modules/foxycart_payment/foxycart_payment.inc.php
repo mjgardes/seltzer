@@ -47,7 +47,7 @@ function foxycart_install($old_revision = 0) {
         ';
         global $db_connect;
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
  
         // Additional contact info for amazon payments
         $sql = '
@@ -58,7 +58,7 @@ function foxycart_install($old_revision = 0) {
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
     }
 }
 
@@ -106,7 +106,7 @@ function foxycart_data ($opts = array()) {
     }
     global $db_connect;
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     // Read from database and store in a structure
     $foxycart_data = array();
     while ($db_row = mysqli_fetch_assoc($res)) {
@@ -135,7 +135,7 @@ function foxycart_contact_data ($opts = array()) {
     }
     global $db_connect;
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     $names = array();
     $row = mysqli_fetch_assoc($res);
     while ($row) {
@@ -163,7 +163,7 @@ function foxycart_contact_save ($contact) {
     $sql = "SELECT * FROM `contact_amazon` WHERE `amazon_name` = '$esc_name'";
     global $db_connect;
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     $row = mysqli_fetch_assoc($res);
     if ($row) {
         // Name is already in database, update if the cid is set
@@ -174,7 +174,7 @@ function foxycart_contact_save ($contact) {
                 WHERE `amazon_name`='$esc_name'
             ";
             $res = mysqli_query($db_connect, $sql);
-            if (!$res) crm_error(mysqli_error($res));
+            if (!$res) crm_error(mysqli_error($db_connect));
         }
     } else {
         // Name is not in database, insert new
@@ -182,7 +182,7 @@ function foxycart_contact_save ($contact) {
             INSERT INTO `contact_amazon`
             (`amazon_name`, `cid`) VALUES ('$esc_name', '$esc_cid')";
             $res = mysqli_query($db_connect, $sql);
-            if (!$res) crm_error(mysqli_error($res));
+            if (!$res) crm_error(mysqli_error($db_connect));
     }
 }
 
@@ -195,7 +195,7 @@ function foxycart_contact_delete ($foxycart_contact) {
     $sql = "DELETE FROM `contact_amazon` WHERE `amazon_name`='$esc_cid'";
     global $db_connect;
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     if (mysql_affected_rows() > 0) {
         message_register("Contact info deleted for $amazon_name");
     }
@@ -234,7 +234,7 @@ function foxycart_payment_api ($payment, $op) {
                 ('$esc_pmtid', '$esc_name')
             ";
             $res = mysqli_query($db_connect, $sql);
-            if (!$res) crm_error(mysqli_error($res));
+            if (!$res) crm_error(mysqli_error($db_connect));
             foxycart_contact_save($amazon_contact);
             break;
         case 'update':
@@ -244,7 +244,7 @@ function foxycart_payment_api ($payment, $op) {
                 WHERE `pmtid` = '$esc_pmtid'
             ";
             $res = mysqli_query($db_connect, $sql);
-            if (!$res) crm_error(mysqli_error($res));
+            if (!$res) crm_error(mysqli_error($db_connect));
             foxycart_contact_save($amazon_contact);
             break;
         case 'delete':
@@ -252,7 +252,7 @@ function foxycart_payment_api ($payment, $op) {
                 DELETE FROM `payment_amazon`
                 WHERE `pmtid`='$esc_pmtid'";
                 $res = mysqli_query($db_connect, $sql);
-                if (!$res) crm_error(mysqli_error($res));
+                if (!$res) crm_error(mysqli_error($db_connect));
             break;
     }
     return $payment;

@@ -61,7 +61,7 @@ function key_install($old_revision = 0) {
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
     }
     // Permissions moved to DB, set defaults on install/upgrade
     if ($old_revision < 2) {
@@ -87,7 +87,7 @@ function key_install($old_revision = 0) {
                     $esc_perm = mysqli_real_escape_string($db_connect, $perm);
                     $sql = "INSERT INTO `role_permission` (`rid`, `permission`) VALUES ('$esc_rid', '$esc_perm')";
                     $res = mysqli_query($db_connect, $sql);
-                    if (!$res) crm_error(mysqli_error($res));
+                    if (!$res) crm_error(mysqli_error($db_connect));
                 }
             }
         }
@@ -180,7 +180,7 @@ function key_data ($opts = array()) {
         ORDER BY `start`, `kid` ASC
     ";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     // Store data
     $keys = array();
     $row = mysqli_fetch_assoc($res);
@@ -266,7 +266,7 @@ function key_save ($key) {
         $sql = "UPDATE `key` SET " . implode(', ', $clauses) . " ";
         $sql .= "WHERE `kid`='$esc_kid'";
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         message_register('Key updated');
     } else {
         // Insert new key
@@ -284,7 +284,7 @@ function key_save ($key) {
         $sql = "INSERT INTO `key` (" . implode(', ', $cols) . ") ";
         $sql .= " VALUES (" . implode(', ', $values) . ")";
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         $kid = mysqli_insert_id($db_connect);
         message_register('Key added');
     }
@@ -300,7 +300,7 @@ function key_delete ($key) {
     $esc_kid = mysqli_real_escape_string($db_connect, $key['kid']);
     $sql = "DELETE FROM `key` WHERE `kid`='$esc_kid'";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     if (mysqli_affected_rows($db_connect) > 0) {
         message_register('Key deleted.');
     }

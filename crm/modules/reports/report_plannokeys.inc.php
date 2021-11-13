@@ -46,11 +46,11 @@ function get_cids_without_keys ($list = array()) {
     );";
     global $db_connect;
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
 
     $sql="INSERT INTO cidlist (cid) VALUES $cidlist;";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     
     $sql="
     SELECT cid
@@ -58,7 +58,7 @@ function get_cids_without_keys ($list = array()) {
     WHERE cid NOT IN (SELECT cid FROM `key`);
     ";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
 
     $keys=array();
     $row = mysqli_fetch_assoc($res);

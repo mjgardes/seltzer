@@ -44,7 +44,7 @@ function variable_install($old_revision = 0) {
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
     }
 }
 
@@ -63,7 +63,7 @@ function variable_set ($name, $value) {
     // Check if variable exists
     $sql = "SELECT `value` FROM `variable` WHERE `name`='$esc_name'";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     
     if (mysqli_num_rows($res) > 0) {
         // Update
@@ -73,7 +73,7 @@ function variable_set ($name, $value) {
             WHERE `name`='$esc_name'
         ";
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
     } else {
         // Insert
         $sql = "
@@ -82,7 +82,7 @@ function variable_set ($name, $value) {
             VALUES ('$esc_name', '$esc_value')
         ";
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
     }
 }
 
@@ -98,7 +98,7 @@ function variable_get ($name, $default) {
     
     $sql = "SELECT `value` FROM `variable` WHERE `name`='$esc_name'";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     
     $variable = mysqli_fetch_assoc($res);
     if ($variable) {
