@@ -1,6 +1,5 @@
 server {
-
-  listen 80 default_server;
+  listen ${NGINX_PORT};
   root /var/www/html;
   index index.html index.php;
 
