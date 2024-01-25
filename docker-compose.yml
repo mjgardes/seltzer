@@ -1,0 +1,116 @@
+version: '3.8'
+services:
+#### PRODUCTION
+  nginx:
+    hostname: nginx.rumplestilzken.com
+    image: nginx:latest
+    volumes:
+      - "./docker/nginx.template:/etc/nginx/templates/default.conf.template"
+      - "../:/var/www"
+    ports:
+      - 8088:80
+    environment:
+        - NGINX_PORT=80
+        - PHP_HOST=php
+    links:
+      - php
+    volumes_from:
+      - php
+
+  php:
+    build: ./docker/php/
+    hostname: php.rumplestilzken.com
+    expose:
+      - 9000
+    links:
+      - mysql
+      # - maildev
+    volumes:
+      - "./crm/:/var/www/html/crm"
+      - "./docker/index.html/:/var/www/html/index.html"
+      # - ./scripts/sendmail.sh/:~/sendmail.sh
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+
+  mysql:
+    image: mariadb
+    hostname: mysql.rumplestilzken.com
+    ports:
+      - 3306:3306
+    volumes:
+      - "./scripts/production/:/docker-entrypoint-initdb.d/"
+      - "./conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf"
+      - /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
+
+#### TEST
+#  nginx_test:
+#    hostname: nginx_test.rumplestilzken.com
+#    image: nginx:latest
+#    volumes:
+#      - "./docker/nginx.template:/etc/nginx/templates/default.conf.template"
+#      - "../:/var/www"
+#    ports:
+#      - 38088:80
+#    environment:
+#        - NGINX_PORT=80
+#        - PHP_HOST=php_test
+#    links:
+#      - php_test
+#    volumes_from:
+#      - php_test
+#
+#  php_test:
+#    build: ./docker/php/
+#    hostname: php_test.rumplestilzken.com
+#    expose:
+#      - 9000
+#    links:
+#      - mysql_test
+#      # - maildev
+#    volumes:
+#      - "./crm_test/:/var/www/html/crm"
+#      - "./docker/index.html/:/var/www/html/index.html"
+#      # - ./scripts/sendmail.sh/:~/sendmail.sh
+#    environment:
+#      MYSQL_HOST: mysql_test
+#      MYSQL_PASSWORD: secret
+#      MYSQL_DATABASE: i3crm
+#      MYSQL_USER: myuser
+#      MYSQL_PASSWORD: password
+#      MYSQL_PORT: 3306
+#
+#  mysql_test:
+#    image: mariadb
+#    hostname: mysql_test.rumplestilzken.com
+#    ports:
+#      - 33306:3306
+#    volumes:
+#      - ./scripts/test/init.sql:/docker-entrypoint-initdb.d/init.sql
+#      - ./conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
+#      - /var/lib/mysql
+#    environment:
+#      MARIADB_ROOT_PASSWORD: secret
+#      MARIADB_DATABASE: i3crm
+#      MARIADB_USER: myuser
+#      MARIADB_PASSWORD: password
+
+  # maildev:
+  #   hostname: maildev.rumplestilzken.com
+  #   image: pigeosolutions/docker-sendmail
+  #   expose:
+  #     - "25"
+  #   environment:
+  #     SUBNET: 192.168
+  #     WHITELIST_FROM: "root@php.localdomain"
+
+# docker exec -i seltzer_mysql_1 mysql -umyuser -ppassword -e "DROP DATABASE mydb; CREATE DATABASE mydb"
+# mysql -umyuser -ppassword i3crm -h 127.0.0.1

@@ -1,0 +1,8 @@
+define these variables in a .env file in the root containing the docker-compose.yaml file
+$(MYSQL_HOST)
+$(MYSQL_PASSWORD)
+$(MYSQL_DATABASE)
+$(MYSQL_USER)
+$(MYSQL_PASSWORD)
+$(MYSQL_ROOT_PASSWORD)
+$(MYSQL_PORT)
