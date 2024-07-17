@@ -2,7 +2,7 @@ version: '3.8'
 services:
 #### PRODUCTION
   nginx:
-    hostname: nginx
+    hostname: nginx.localhost
     image: nginx:latest
     volumes:
       - "./docker/nginx.template:/etc/nginx/templates/default.conf.template"
@@ -19,7 +19,7 @@ services:
 
   php:
     build: ./docker/php/
-    hostname: php.rumplestilzken.com
+    hostname: php.localhost
     expose:
       - 9000
     links:
@@ -37,7 +37,7 @@ services:
 
   mysql:
     image: mariadb
-    hostname: mysql
+    hostname: mysql.rumplestilzken.com
     ports:
       - 3306:3306
     volumes:

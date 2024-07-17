@@ -23,4 +23,4 @@ RUN echo "sendmail_path=sendmail -i -t" >> /usr/local/etc/php/conf.d/php-sendmai
 # Fully qualified domain name configuration for sendmail on localhost.
 # Without this sendmail will not work.
 # This must match the value for 'hostname' field that you set in ssmtp.conf.
-RUN echo "php php.rumplestilzken.com" >> /etc/hosts
+RUN echo "php" >> /etc/hosts
