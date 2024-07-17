@@ -37,7 +37,7 @@ services:
 
   mysql:
     image: mariadb
-    hostname: mysql.rumplestilzken.com
+    hostname: mysql.localhost
     ports:
       - 3306:3306
     volumes:
