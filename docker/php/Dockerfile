@@ -9,9 +9,9 @@ RUN apt-get update && apt-get install -q -y ssmtp mailutils nmap && rm -rf /var/
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 # set up sendmail config, see http://linux.die.net/man/5/ssmtp.conf for options
-RUN echo "hostname=php.rumplestilzken.com" > /etc/ssmtp/ssmtp.conf
-RUN echo "root=root@php.rumplestilzken.com" >> /etc/ssmtp/ssmtp.conf
-RUN echo "mailhub=maildev.rumplestilzken.com" >> /etc/ssmtp/ssmtp.conf
+RUN echo "hostname=php" > /etc/ssmtp/ssmtp.conf
+RUN echo "root=root@php" >> /etc/ssmtp/ssmtp.conf
+RUN echo "mailhub=maildev" >> /etc/ssmtp/ssmtp.conf
 # The above 'maildev' is the name you used for the link command
 # in your docker-compose file or docker link command.
 # Docker automatically adds that name in the hosts file
