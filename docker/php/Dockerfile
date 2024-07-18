@@ -1,12 +1,20 @@
 FROM php:7.4-fpm
+
+# Allow downstream installation of packages
+RUN apt-get update
+
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-configure calendar && docker-php-ext-install calendar
 
 # Installs sendmail
-RUN apt-get update && apt-get install -q -y ssmtp mailutils nmap && rm -rf /var/lib/apt/lists/*
+# Installs git for stripe integration
+RUN apt-get install -q -y ssmtp mailutils nmap git unzip && rm -rf /var/lib/apt/lists/*
 
 # Installs php modules
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN docker-php-ext-install mysqli pdo pdo_mysql 
+
+# Copy Composer to path for stripe integration
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # set up sendmail config, see http://linux.die.net/man/5/ssmtp.conf for options
 RUN echo "hostname=php" > /etc/ssmtp/ssmtp.conf

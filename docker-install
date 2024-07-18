@@ -6,3 +6,5 @@ MYSQL_USER=user
 MYSQL_PASSWORD=userPassword
 MYSQL_ROOT_PASSWORD=rootPassword
 MYSQL_PORT=3306
+PAYMENT_DOMAIN=http://rumplestilzken.com:17000/
+PAYMENT_SECRET_KEY=sk_test_4eC39HqLyjWDarjtT1zdp7d

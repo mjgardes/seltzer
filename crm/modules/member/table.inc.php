@@ -80,10 +80,13 @@ function member_table ($opts = NULL) {
             $table['columns'][] = array('title'=>'Emergency Relation','class'=>'');
         }
     }
+
     // Add ops column
     if (!$export && (user_access('member_edit') || user_access('member_delete'))) {
         $table['columns'][] = array('title'=>'Ops','class'=>'');
     }
+
+    $table['columns'][] = array('title'=>'Stripe');
 
     // Loop through member data
     foreach ($members as $member) {
@@ -147,8 +150,13 @@ function member_table ($opts = NULL) {
             // Add ops row
             if (!$export && (user_access('member_edit') || user_access('member_delete'))) {
                 $row[] = join(' ', $ops);
-            }
+            }       
 
+            $stripeColumn = array();
+            $stripeSend = "send";
+            $stripeColumn[] = $stripeSend;
+            $row[] = join(' ', $stripeColumn);
+            
             // Add row to table
             $table['rows'][] = $row;
         }

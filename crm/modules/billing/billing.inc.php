@@ -25,7 +25,7 @@
  * this number.
  */
 function billing_revision () {
-    return 1;
+    return 2;
 }
 
 /**
@@ -251,13 +251,21 @@ function billing_page (&$page_data, $page_name, $options) {
 //                page_add_content_bottom($page_data, theme('billing_first_month', $_GET['cid']), 'Plan');
 //            }
             if ($_GET['cid'] == user_id()) {
-                $makepiIframeUrl = variable_get('makepiiframeurl');
-                $plan .= '<h3>New Payment Authorization</h3>';
-                $plan .= '<p>All members must authorize the new membership rate and enter your payment information going forward. If you are currently in an annual plan, or on a scholarship, there is no need to fill this form out, unless you would like to have your payment information ready for your next billing cycle.</p>';
-                $plan .= '<div id="makepi-checkout">';
-                $plan .= "<iframe id=\"makepi-iframe-ui\" src=\"{$makepiIframeUrl}\" style=\"border:none;width: 100%;height:800px;\"></iframe>";
-                $plan .= '</div>';
-                page_add_content_bottom($page_data, $plan, 'Plan');
+                $useDefaultPaymentProcessor = variable_get('useDefaultPaymentProcessor', 0);
+                //Default to newest implementation
+                if($useDefaultPaymentProcessor >= 0) {
+                    require_once('modules/stripe_payment/stripe_entrypoint.php');
+                    connectToStripe();
+                }
+                else {
+                    $makepiIframeUrl = variable_get('makepiiframeurl');
+                    $plan .= '<h3>New Payment Authorization</h3>';
+                    $plan .= '<p>All members must authorize the new membership rate and enter your payment information going forward. If you are currently in an annual plan, or on a scholarship, there is no need to fill this form out, unless you would like to have your payment information ready for your next billing cycle.</p>';
+                    $plan .= '<div id="makepi-checkout">';
+                    $plan .= "<iframe id=\"makepi-iframe-ui\" src=\"{$makepiIframeUrl}\" style=\"border:none;width: 100%;height:800px;\"></iframe>";
+                    $plan .= '</div>';
+                    page_add_content_bottom($page_data, $plan, 'Plan');
+                }
             }
             break;
     }
