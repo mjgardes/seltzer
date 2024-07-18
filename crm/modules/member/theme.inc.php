@@ -57,10 +57,10 @@ function theme_member_filter_form () {
 }
 
 /**
- * @return The themed html for a member voting report.
+ * @return The themed html for an active member report.
 */
-function theme_member_voting_report () {
-    return theme('table', crm_get_table('member_voting_report'));
+function theme_member_active_report () {
+    return theme('table', crm_get_table('member_active_report'));
 }
 
 /**

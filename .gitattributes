@@ -1,0 +1,3 @@
+docker-compose.yml merge=ours
+docker/ merge=ours
+.gitignore merge=ours

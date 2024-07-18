@@ -137,7 +137,7 @@ function user_install ($old_revision = 0) {
         }
     }
 
-    if ($old_revision < 7) {
+    if ($old_revision < 2) {
         // Alter member table
         $sql = '
             ALTER TABLE `user`
@@ -746,6 +746,7 @@ function command_login () {
 
     if ($valid) {
         // Initialize user token session
+        $params = session_get_cookie_params();
         setcookie('makepi-token',
             json_web_token($user['makepi-uuid']),
             time() + (1 * 7 * 60 * 60),

@@ -376,7 +376,7 @@ function storage_delete ($opts) {
         $sql = "DELETE FROM storage_plot WHERE pid = '" . $esc_name . "'";
         $res = mysqli_query($db_connect, $sql);
         if (!$res) crm_error(mysqli_error($db_connect));
-        if (mysqli_affected_rows() > 0) {
+        if (mysqli_affected_rows($db_connect) > 0) {
             storage_log($plot);
             message_register('Storage Plot '.$esc_name.' deleted.');
         }

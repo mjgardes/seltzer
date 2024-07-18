@@ -56,22 +56,22 @@ $(document).ready(function () {
 
 var showTab = function (hash) {
     $('fieldset.tab').hide();
-    $('ul.page-nav li a').removeClass('active');
+    $('ul.page-nav li a').removeClass('enabled');
     if (hash == null) {
         hash = window.location.hash;
     }
     if (hash != '') {
         // Display tab specified in hash
         $('fieldset' + hash).show();
-        $('ul.page-nav li a[href="' + hash + '"]').addClass('active');
+        $('ul.page-nav li a[href="' + hash + '"]').addClass('enabled');
     } else if (httpGet.hasOwnProperty('tab')) {
         // Display tab specified in query string
         $('fieldset#tab-' + httpGet.tab).show();
-        $('ul.page-nav li a[href="#tab-' + httpGet.tab + '"]').addClass('active');
+        $('ul.page-nav li a[href="#tab-' + httpGet.tab + '"]').addClass('enabled');
     } else {
         // Display view tab
         $('fieldset#tab-view').show();
-        $('ul.page-nav li a[href="#tab-view"]').addClass('active');
+        $('ul.page-nav li a[href="#tab-view"]').addClass('enabled');
     }
 };
 

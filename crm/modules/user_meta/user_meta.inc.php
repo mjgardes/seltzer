@@ -191,7 +191,7 @@ function user_meta_data ($opts = array()) {
     if (!empty($opts['filter'])) {
         foreach ($opts['filter'] as $name => $param) {
             switch ($name) {
-                case 'active':
+                case 'enabled':
                     if ($param) {
                         $sql .= " AND (`start` IS NOT NULL AND `end` IS NULL)";
                     } else {
@@ -333,7 +333,7 @@ function user_meta_delete ($user_meta) {
     $sql = "DELETE FROM `user_meta` WHERE `umid`='$esc_umid'";
     $res = mysqli_query($db_connect, $sql);
     if (!$res) crm_error(mysqli_error($db_connect));
-    if (mysqli_affected_rows() > 0) {
+    if (mysqli_affected_rows($db_connect) > 0) {
         message_register('User Meta Data deleted.');
     }
 }

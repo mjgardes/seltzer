@@ -372,7 +372,7 @@ function email_list_delete ($list) {
     $sql = "DELETE FROM `email_lists` WHERE `lid`='$esc_lid'";
     $res = mysqli_query($db_connect, $sql);
     if (!$res) crm_error(mysqli_error($db_connect));
-    if (mysqli_affected_rows() > 0) {
+    if (mysqli_affected_rows($db_connect) > 0) {
         message_register('List deleted.');
     }
 
@@ -380,7 +380,7 @@ function email_list_delete ($list) {
     $sql = "DELETE FROM `email_list_subscriptions` WHERE `lid`='$esc_lid'";
     $res = mysqli_query($db_connect, $sql);
     if (!$res) crm_error(mysqli_error($db_connect));
-    if (mysqli_affected_rows() > 0) {
+    if (mysqli_affected_rows($db_connect) > 0) {
         message_register('Associated subscriptions deleted.');
     }
 }
@@ -397,9 +397,9 @@ function email_list_unsubscribe ($subscription) {
     $sql = "DELETE FROM `email_list_subscriptions` WHERE `lid`='$esc_lid' AND `cid`='$esc_cid'";
     $res = mysqli_query($db_connect, $sql);
     if (!$res) crm_error(mysqli_error($db_connect));
-    if (mysqli_affected_rows() > 0) {
+    if (mysqli_affected_rows($db_connect) > 0) {
         message_register('Subscription deleted.');
-    } if (mysqli_affected_rows() > 1){
+    } if (mysqli_affected_rows($db_connect) > 1){
         error_register("More than one subscription was deleted. This shouldn't happen
                        under normal circumstances. Please make sure your database is okay!");
     }

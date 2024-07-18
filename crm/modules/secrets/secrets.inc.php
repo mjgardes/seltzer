@@ -188,7 +188,7 @@ function secrets_delete ($secret) {
         $sql = "DELETE FROM variable WHERE name = '" . $esc_name . "'";
         $res = mysqli_query($db_connect, $sql);
         if (!$res) die(mysqli_error());
-        if (mysqli_affected_rows() > 0) {
+        if (mysqli_affected_rows($db_connect) > 0) {
             message_register('Secret deleted.');
         }
     } else {

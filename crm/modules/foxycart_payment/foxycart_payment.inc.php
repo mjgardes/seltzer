@@ -196,7 +196,7 @@ function foxycart_contact_delete ($foxycart_contact) {
     global $db_connect;
     $res = mysqli_query($db_connect, $sql);
     if (!$res) crm_error(mysqli_error($db_connect));
-    if (mysql_affected_rows() > 0) {
+    if (mysql_affected_rows($db_connect) > 0) {
         message_register("Contact info deleted for $amazon_name");
     }
     return crm_url('amazon-admin');

@@ -72,44 +72,30 @@ function member_data ($opts = array()) {
         if (isset($filter['active']) && $filter['active']) {
             $v_filter++;
             if ($v_filter > 1) $f_sql .= " OR";
-            $f_sql .= " (`plan`.`pid` IN ('14','6') AND (`membership`.`start` IS NOT NULL AND `membership`.`start` < NOW()) AND (`membership`.`end` IS NULL OR `membership`.`end` > NOW()))\n";
+            // I removed plan.enbled becuase we can disable a plan but still have legacy members on it
+            $f_sql .= " (`plan`.`active` AND `membership`.`start` IS NOT NULL AND `membership`.`start` < NOW() AND (`membership`.`end` IS NULL OR `membership`.`end` > NOW()))\n";
         }
         if (isset($filter['scholarship']) && $filter['scholarship']) {
             $v_filter++;
             if ($v_filter > 1) $f_sql .= " OR";
-            $f_sql .= " (`plan`.`pid` = '6' AND (`membership`.`start` IS NOT NULL AND `membership`.`start` < NOW()) AND (`membership`.`end` IS NULL OR `membership`.`end` > NOW()))\n";
+            $f_sql .= " (`plan`.`enabled` AND `plan`.`active` AND `plan`.`name` LIKE '%scholarship%' AND `membership`.`start` IS NOT NULL AND `membership`.`start` < NOW() AND (`membership`.`end` IS NULL OR `membership`.`end` > NOW()))\n";
         }
         if (isset($filter['onboarding']) && $filter['onboarding']) {
             $v_filter++;
             if ($v_filter > 1) $f_sql .= " OR";
-            $f_sql .= " (`plan`.`pid` = '13' AND (`membership`.`start` IS NOT NULL AND `membership`.`start` < NOW()) AND (`membership`.`end` IS NULL OR `membership`.`end` > NOW()))\n";
+            $f_sql .= " (`plan`.`enabled` AND `plan`.`name` LIKE '%Onboarding%' AND `membership`.`start` IS NOT NULL AND `membership`.`start` < NOW() AND (`membership`.`end` IS NULL OR `membership`.`end` > NOW()))\n";
         }
         if (isset($filter['hiatus']) && $filter['hiatus']) {
             $v_filter++;
             if ($v_filter > 1) $f_sql .= " OR";
-            $f_sql .= " (`plan`.`pid` = '9' AND (`membership`.`start` IS NOT NULL AND `membership`.`start` < NOW()) AND (`membership`.`end` IS NULL OR `membership`.`end` > NOW()))\n";
+            $f_sql .= " (`plan`.`enabled` AND `plan`.`name` LIKE '%hiatus%' AND `membership`.`start` IS NOT NULL AND `membership`.`start` < NOW() AND (`membership`.`end` IS NULL OR `membership`.`end` > NOW()))\n";
         }
-        // figure out why inactive isn't pulling the right info
         if (isset($filter['inactive']) && $filter['inactive']) {
             $v_filter++;
             if ($v_filter > 1) $f_sql .= " OR";
-
-            // Get all active users
-            $l_active = member_data(array('filter'=>array('active'=>true, 'scholarship'=>true, 'onboarding'=>true, 'hiatus'=>true)));
-            // git list of active user cids
-            $l_cids = array();
-            foreach ($l_active as $l_user) {
-                $l_cids[] = $l_user['cid'];
-            }
-            // I don't know why but seems to ignore the NOT IN clause
-            $esc_list = "(" . implode(',', $l_cids) . ")";
-            $f_sql .= " ( (`membership`.`start` IS NULL OR `membership`.`start` > NOW()) OR (`membership`.`end` IS NOT NULL AND `membership`.`end` < NOW()) AND `member`.`cid` NOT IN $esc_list)";
-
+            $f_sql .= " (NOT `plan`.`active` )\n";
         }
         if (!empty($f_sql)) { $sql .= " AND ( \n$f_sql\n )"; }
-    }
-    if (isset($filter['voting'])) {
-        $sql .= " AND (`membership`.`start` IS NOT NULL AND `membership`.`start` < NOW() AND (`membership`.`end` IS NULL OR `membership`.`end` > NOW()) AND `plan`.`voting` <> 0)";
     }
 
     $sql .= " GROUP BY `member`.`cid` ";
@@ -117,7 +103,7 @@ function member_data ($opts = array()) {
 
     // var_dump_pre($sql);
     $res = mysqli_query($db_connect, $sql);
-    // var_dump_pre($res);
+    // var_dump_pre(mysqli_fetch_assoc($res));
     // var_dump_pre("[EOF]");
     if (!$res) crm_error(mysqli_error($db_connect));
 
@@ -161,7 +147,7 @@ function member_data ($opts = array()) {
         $sql = "
             SELECT
             `membership`.`sid`, `membership`.`cid`, `membership`.`start`, `membership`.`end`,
-            `plan`.`pid`, `plan`.`name`, `plan`.`price`, `plan`.`active`, `plan`.`voting`
+            `plan`.`pid`, `plan`.`name`, `plan`.`price`, `plan`.`enabled`, `plan`.`active`
             FROM `membership`
             INNER JOIN `plan` ON `plan`.`pid` = `membership`.`pid`
             WHERE `membership`.`cid`='$esc_cid'
@@ -183,8 +169,8 @@ function member_data ($opts = array()) {
                     'pid' => $row['pid'],
                     'name' => $row['name'],
                     'price' => $row['price'],
-                    'active' => $row['active'],
-                    'voting' => $row['voting']
+                    'enabled' => $row['enabled'],
+                    'active' => $row['active']
                 )
             );
             $members[$index]['membership'][] = $membership;
@@ -320,7 +306,7 @@ function member_save ($member) {
         ";
         $res = mysqli_query($db_connect, $sql);
         if (!$res) crm_error(mysqli_error($db_connect));
-        if (mysqli_affected_rows() < 1) {
+        if (mysqli_affected_rows($db_connect) < 1) {
             return null;
         }
     }
@@ -357,11 +343,11 @@ function member_plan_data ($opts = array()) {
     if (isset($opts['filter'])) {
         foreach ($opts['filter'] as $name => $param) {
             switch ($name) {
-                case 'active':
+                case 'enabled':
                     if ($param) {
-                        $sql .= " AND `plan`.`active` <> 0";
+                        $sql .= " AND `plan`.`enabled` <> 0";
                     } else {
-                        $sql .= " AND `plan`.`active` = 0";
+                        $sql .= " AND `plan`.`enabled` = 0";
                     }
                     break;
             }
@@ -415,7 +401,7 @@ function member_plan_save ($plan) {
     global $db_connect;
     $esc_name = mysqli_real_escape_string($db_connect, $plan['name']);
     $esc_price = mysqli_real_escape_string($db_connect, $plan['price']);
-    $esc_voting = mysqli_real_escape_string($db_connect, $plan['voting']);
+    $esc_enabled = mysqli_real_escape_string($db_connect, $plan['enabled']);
     $esc_active = mysqli_real_escape_string($db_connect, $plan['active']);
     $esc_pid = mysqli_real_escape_string($db_connect, $plan['pid']);
     if (isset($plan['pid'])) {
@@ -425,8 +411,8 @@ function member_plan_save ($plan) {
             SET
                 `name`='$esc_name',
                 `price`='$esc_price',
-                `active`='$esc_active',
-                `voting`='$esc_voting'
+                `enabled`='$esc_enabled',
+                `active`='$esc_active'
             WHERE `pid`='$esc_pid'
         ";
         $res = mysqli_query($db_connect, $sql);
@@ -436,9 +422,9 @@ function member_plan_save ($plan) {
         // Insert
         $sql = "
             INSERT INTO `plan`
-            (`name`,`price`, `voting`, `active`)
+            (`name`,`price`, `enabled`, `active`)
             VALUES
-            ('$esc_name', '$esc_price', '$esc_voting', '$esc_active')
+            ('$esc_name', '$esc_price', '$esc_enabled', '$esc_active')
         ";
         $res = mysqli_query($db_connect, $sql);
         if (!$res) crm_error(mysqli_error($db_connect));
@@ -496,7 +482,7 @@ function member_membership_data ($opts) {
         foreach ($opts['filter'] as $name => $param) {
             $esc_param = mysqli_real_escape_string($db_connect, $param);
             switch ($name) {
-                case 'active':
+                case 'enabled':
                     if ($param) {
                         $sql .= " AND (`end` IS NULL OR `end` > '$esc_today') ";
                     } else {
@@ -532,8 +518,8 @@ function member_membership_data ($opts) {
                 'pid' => $row['pid'],
                 'name' => $row['name'],
                 'price' => $row['price'],
-                'active' => $row['active'],
-                'voting' => $row['voting']
+                'enabled' => $row['enabled'],
+                'active' => $row['active']
             )
         );
         $row = mysqli_fetch_assoc($res);
@@ -579,10 +565,19 @@ function member_membership_save ($membership) {
         // Insert
         $sql = "
             INSERT INTO `membership`
-            (`cid`, `pid`, `start`)
-            VALUES
-            ('$esc_cid', '$esc_pid', '$esc_start')
-        ";
+            (`cid`, `pid`, ";
+        if ($esc_end) {
+            $sql .= "`start`, `end` ";
+        } else {
+            $sql .= "`start` ";
+        }
+        $sql .= ") VALUES ('$esc_cid', '$esc_pid', ";
+        if ($esc_end) {
+            $sql .= "'$esc_start', '$esc_end' ";
+        } else {
+            $sql .= "'$esc_start' ";
+        }
+        $sql .= ")";
         $res = mysqli_query($db_connect, $sql);
         if (!$res) crm_error(mysqli_error($db_connect));
         $membership['sid'] = mysqli_insert_id($db_connect);

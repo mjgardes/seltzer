@@ -201,8 +201,8 @@ function command_member_plan_add () {
     $plan = array(
         'name' => $_POST['name']
         , 'price' => $_POST['price']
-        , 'voting' => $_POST['voting'] ? '1' : '0'
         , 'active' => $_POST['active'] ? '1' : '0'
+        , 'enabled' => $_POST['enabled'] ? '1' : '0'
         , 'pid' => $_POST['pid']
     );
 
@@ -229,8 +229,8 @@ function command_member_plan_update () {
     $plan = array(
         'name' => $_POST['name']
         , 'price' => $_POST['price']
-        , 'voting' => $_POST['voting'] ? '1' : '0'
         , 'active' => $_POST['active'] ? '1' : '0'
+        , 'enabled' => $_POST['enabled'] ? '1' : '0'
         , 'pid' => $_POST['pid']
     );
 
@@ -376,14 +376,17 @@ function command_member_filter () {
     if ($_GET['filter'] == 'all') {
         $_SESSION['member_filter'] = array('all'=>true);
     }
+    if ($_GET['filter'] == 'enabled') {
+        $_SESSION['member_filter'] = array('enabled'=>true);
+    }
     if ($_GET['filter'] == 'active') {
         $_SESSION['member_filter'] = array('active'=>true);
     }
-    if ($_GET['filter'] == 'voting') {
-        $_SESSION['member_filter'] = array('voting'=>true);
-    }
     if ($_GET['filter'] == 'onboarding') {
         $_SESSION['member_filter'] = array('onboarding'=>true);
+    }
+    if ($_GET['filter'] == 'scholarship') {
+        $_SESSION['member_filter'] = array('scholarship'=>true);
     }
     if ($_GET['filter'] == 'hiatus') {
         $_SESSION['member_filter'] = array('hiatus'=>true);
@@ -460,8 +463,8 @@ function command_member_import () {
             $plan = array(
                 'name' => $esc_plan_name
                 , 'price' => '0'
-                , 'voting' => '0'
-                , 'active' => '1'
+                , 'active' => '0'
+                , 'enabled' => '1'
                 , 'pid' => $_POST['pid']
             );
             member_plan_save($plan);
@@ -627,8 +630,8 @@ function command_member_plan_import () {
         $plan = array(
             'name' => $row['planname']
             , 'price' => $row['price']
-            , 'voting' => $row['voting'] ? '1' : '0'
             , 'active' => $row['active'] ? '1' : '0'
+            , 'enabled' => $row['enabled'] ? '1' : '0'
             , 'pid' => $row['pid']
         );
 

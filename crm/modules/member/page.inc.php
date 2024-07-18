@@ -174,7 +174,6 @@ function member_page (&$page_data, $page_name, $options) {
                 $reports = theme('member_membership_report');
                 $reports .= theme('member_email_report', array('filter'=>array('active'=>true)));
                 $reports .= theme('member_email_report', array('filter'=>array('active'=>false)));
-                //$reports .= theme('member_voting_report');
                 page_add_content_bottom($page_data, $reports);
             }
             break;
