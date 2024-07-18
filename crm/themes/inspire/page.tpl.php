@@ -15,6 +15,7 @@
     <script type="text/javascript" src="<?php print path_to_theme(); ?>/js/ddtf.js"></script>
     <script type="text/javascript" src="<?php print path_to_theme(); ?>/js/checkout.js?_=9"></script>
     <script type="text/javascript" src="<?php print path_to_theme(); ?>/script.js"></script>
+    <script type="text/javascript" src="<?php print path_to_theme(); ?>/js/stripe-webhooks.js"></script>
     <?php print $scripts; ?>
     <title><?php print $title; ?></title>
 </head>
