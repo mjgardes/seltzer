@@ -1,13 +1,14 @@
 <?php
 
 require_once '../../vendor/autoload.php';
+require_once 'secret.php';
 
-\Stripe\Stripe::setApiKey(getenv('PAYMENT_SECRET_KEY'));
+\Stripe\Stripe::setApiKey($stripeApiKey);
 
 header('Content-Type: application/json');
 
-// $YOUR_DOMAIN = getenv('PAYMENT_DOMAIN') . '/crm/modules/stripe_payment';
-$YOUR_DOMAIN = 'google.com';
+$YOUR_DOMAIN = getenv('PAYMENT_DOMAIN_REDIRECT_URL_BASE') . '/crm/modules/stripe_payment';
+// $YOUR_DOMAIN = 'google.com';
 
 try {
   $prices = \Stripe\Price::all([

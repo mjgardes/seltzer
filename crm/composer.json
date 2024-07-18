@@ -2,8 +2,7 @@
     "name": "root/crm",
     "type": "project",
     "require": {
-        "stripe/stripe-php": "^15.2"
+        "stripe/stripe-php": "^15.2",
+        "vlucas/phpdotenv": "^5.6"
     }
 }
-
-

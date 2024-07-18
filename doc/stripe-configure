@@ -1,0 +1,1 @@
+Copy crm/modules/stripe_payment/env.example to crm/modules/stripe_payment/.env and update API key

@@ -6,5 +6,5 @@ crm/phpinfo.php
 crm/test.php
 test/*
 .env
-
+**/.env
 
