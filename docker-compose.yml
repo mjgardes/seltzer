@@ -24,11 +24,10 @@ services:
       - 9000
     links:
       - mysql
-      # - maildev
+      - maildev
     volumes:
       - "./crm/:/var/www/html/crm"
       - "./docker/index.html/:/var/www/html/index.html"
-      # - "./scripts/common/installComposer.sh:/installComposer.sh"
       # - ./scripts/sendmail.sh/:~/sendmail.sh
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
@@ -51,6 +50,15 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_PORT: ${MYSQL_PORT}
+
+  maildev:
+    hostname: maildev
+    image: pigeosolutions/docker-sendmail
+    expose:
+      - "25"
+    environment:
+      SUBNET: 192.168
+      WHITELIST_FROM: "root@php.localdomain"
 
 #### TEST
 #  nginx_test:
