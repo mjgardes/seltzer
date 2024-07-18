@@ -1,0 +1,9 @@
+{
+    "name": "root/crm",
+    "type": "project",
+    "require": {
+        "stripe/stripe-php": "^15.2"
+    }
+}
+
+
