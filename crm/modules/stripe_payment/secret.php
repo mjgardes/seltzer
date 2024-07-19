@@ -1,8 +1,12 @@
 <?php
+// Save path of directory containing index.php
+$crm_root = realpath(__DIR__ . '/../..');
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+require_once('../variable/variable.inc.php');
 
-$stripeApiKey = $_ENV['PAYMENT_SECRET_KEY'];
+// This allows the database to connect
+require_once($crm_root . '/include/crm.inc.php');
+
+$stripeApiKey = variable_get("paymentProcessorApiKey", "NO_KEY_PROVIDED-UPDATE__SERVER_CONFIGURATION");
 
 ?>
