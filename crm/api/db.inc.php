@@ -7,12 +7,16 @@ $crm_root = realpath(dirname(__FILE__) . '/..');
 // Bootstrap the crm.
 // This brings in the global variables like the host, user, pw, etc.
 require_once($crm_root . '/include/crm.inc.php');
+require_once($crm_root . '/include/sys/util.inc.php');
 
 // split the config_db_host since mysqli has different formatting
 list($mysqli_host, $mysqli_socket) = preg_split(":",$conf);
 
 // Create the DB connection for SQL queries
 $con = mysqli_connect($mysqli_host,$config_db_user,$config_db_password,$config_db_db,null,$mysqli_socket);
+if(!isset($db_connect)) {
+  $db_connect = mysqli_connect($config_db_host, $config_db_user, $config_db_password, $config_db_db, null, $config_db_socket);
+}
 
 // Check connection
 if (mysqli_connect_errno()) {

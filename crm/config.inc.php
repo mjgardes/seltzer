@@ -21,6 +21,8 @@
 */
 
 require_once($crm_root . '/config_db.inc.php');
+require_once($crm_root . '/api/db.inc.php');
+require_once($crm_root . '/modules/variable/variable.inc.php');
 
 // Site info
 
@@ -37,7 +39,7 @@ $config_currency_code = 'USD';
 $config_email_from = 'treasurer@i3detroit.org';
 
 // The email address to notify when a user is created
-$config_email_to = 'contact@i3detroit.com';
+$config_email_to = variable_get('contact_email', 'contact@i3detroit.com');
 
 // The hostname of the server
 $config_host = $_SERVER['SERVER_NAME'];
