@@ -1,1 +1,3 @@
-Copy crm/modules/stripe_payment/env.example to crm/modules/stripe_payment/.env and update API key
+variables table entries:
+paymentProcessorApiKey - API key used to authenticate with stripe
+useDefaultPaymentProcessor - if not exists, default to newest payment processing system, if value < 0 revert to makepi

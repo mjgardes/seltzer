@@ -1,4 +1,4 @@
-Seltzer CRM 0.5.5 - An open source CRM for hackerspaces  
+Seltzer CRM 0.5.6 - An open source CRM for hackerspaces  
 Copyright 2009-2018 Edward L. Platt <ed@elplatt.com>  
 Distributed under GPLv3 (see COPYING for more info)
 
@@ -34,3 +34,5 @@ For more information on using Seltzer CRM, see the
 [wiki](https://github.com/elplatt/seltzer/wiki).
 Installation instructions are in the INSTALL file and on the wiki
 [here](https://github.com/elplatt/seltzer/wiki/Installing-Seltzer-CRM).
+
+## i3 Detroit Implementation documentation located ./doc
