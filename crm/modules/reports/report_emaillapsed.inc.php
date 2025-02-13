@@ -39,7 +39,7 @@ $report_emaillapsed_desc = "List of inactive member email addresses";
 if (! function_exists('member_email_report')) {
     function member_email_report ($opts) {
         $result = array();
-        $data = member_data($opts);
+        $data = member_data(array('filter'=>array('inactive'=>true))); // Get active members
         foreach ($data as $row) {
             $email = trim($row['contact']['email']);
             if (!empty($email)) {

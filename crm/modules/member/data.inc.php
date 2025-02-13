@@ -93,7 +93,11 @@ function member_data ($opts = array()) {
         if (isset($filter['inactive']) && $filter['inactive']) {
             $v_filter++;
             if ($v_filter > 1) $f_sql .= " OR";
-            $f_sql .= " (NOT `plan`.`active` )\n";
+            $active_members = member_data(array('filter'=>array('active'=>true,'scholarship'=>true))); // Get active members
+            foreach ($active_members as $active) {
+                $activeCids[] = $active['cid'];
+            }
+            $f_sql .= " (`member`.`cid` NOT IN (" . implode(',', $activeCids) . ") )\n";
         }
         if (!empty($f_sql)) { $sql .= " AND ( \n$f_sql\n )"; }
     }

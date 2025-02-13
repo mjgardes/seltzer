@@ -530,12 +530,12 @@ function member_filter_form () {
 
     // Available filters
     $filters = array(
-        'all' => 'All',
         'active' => 'Active',
         'scholarship' => 'Scholarship',
         'onboarding' => 'Onboarding',
         'hiatus' => 'Hiatus',
-        'inactive' => 'Inactive'
+        'inactive' => 'Inactive',
+        'all' => 'All'
     );
 
     // Default filter

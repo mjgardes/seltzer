@@ -82,7 +82,7 @@ function plannokeys_table ($opts = NULL) {
         }
     }
 
-    $active_members = member_data(array('filter'=>array('active'=>true, 'scholarship'=>true))); // Get inactive members
+    $active_members = member_data(array('filter'=>array('active'=>true, 'scholarship'=>true))); // Get active members
 
     // build cid index
     $cidlist = array();
