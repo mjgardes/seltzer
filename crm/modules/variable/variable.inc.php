@@ -90,7 +90,7 @@ function variable_set ($name, $value) {
  * Get a variable's value.
  * @param $name
  * @param $default The value to return if no such variable exists.
- * @return The value of the variable named $name, or $default if not found.
+ * @return string The value of the variable named $name, or $default if not found.
  */
 function variable_get ($name, $default) {
     global $db_connect;

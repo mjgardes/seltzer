@@ -158,7 +158,7 @@ function user_install ($old_revision = 0) {
  *   'filter' An array mapping filter names to filter values
  *   'join' Array of entities to be included in the results, options are:
  *     - role: adds 'roles' key with array of roles as a value.
- * @return An array with each element representing a user.
+ * @return array An array with each element representing a user.
 */
 function user_data ($opts) {
     global $db_connect;
@@ -678,7 +678,7 @@ function user_check_reset_code ($code) {
 }
 
 /**
- * @return a random password salt.
+ * @return string a random password salt.
  */
 function user_salt () {
     $chars = 'abcdefghijklmnopqrstuvwxyz01234567890!@#$%^&*()-_=+[]{}\\|`~;:"\',./<>?';
@@ -695,7 +695,7 @@ function user_salt () {
  * Generate a salted password hash.
  * @param $password
  * @param $salt
- * @return The hash string.
+ * @return string The hash string.
  */
 function user_hash ($password, $salt) {
     $input = empty($salt) ? $password : $salt . $password;
@@ -706,7 +706,7 @@ function user_hash ($password, $salt) {
 /**
  * Handle login request.
  *
- * @return the url to display when complete.
+ * @return string the url to display when complete.
  */
 function command_login () {
     global $esc_post;
@@ -885,6 +885,13 @@ function command_set_password () {
     global $db_connect;
     global $esc_post;
 
+    // Get user id
+    $sql = "SELECT * FROM `user` WHERE `cid`='$esc_post[cid]'";
+    $res = mysqli_query($db_connect, $sql);
+    if (!$res) { crm_error(mysqli_error($db_connect)); }
+    $row = mysqli_fetch_assoc($res);
+    $esc_cid = mysqli_real_escape_string($db_connect, $row['cid']);
+
     // Check permissions
     if ((user_id() != $esc_post['cid']) && !user_access('user_edit')) {
         error_register('Current user does not have permission: user_edit');
@@ -896,13 +903,6 @@ function command_set_password () {
         error_register('Passwords do not match');
         return crm_url("contact&cid=$esc_cid");
     }
-
-    // Get user id
-    $sql = "SELECT * FROM `user` WHERE `cid`='$esc_post[cid]'";
-    $res = mysqli_query($db_connect, $sql);
-    if (!$res) { crm_error(mysqli_error($db_connect)); }
-    $row = mysqli_fetch_assoc($res);
-    $esc_cid = mysqli_real_escape_string($db_connect, $row['cid']);
 
     // Calculate hash
     $salt = user_salt();
@@ -1377,7 +1377,7 @@ function user_page (&$page_data, $page_name, $options) {
 
 function json_web_token($uuid) {
     // Fetch JWT Secret
-    $jwtsecret = variable_get('jwtsecret');
+    $jwtsecret = variable_get('jwtsecret', '');
     // Generate JWT Header and Payload
     $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
     $payload = json_encode(['sub' => $uuid, 'iat' => time(), 'exp' => time() + (1 * 24 * 60 * 60)]);
