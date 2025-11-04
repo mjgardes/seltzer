@@ -91,7 +91,7 @@ function command_register () {
         $esc_test_name = mysqli_real_escape_string($db_connect, $test_username);
         $sql = "SELECT * FROM `user` WHERE `username`='$esc_test_name'";
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         $user_row = mysqli_fetch_assoc($res);
         if (!$user_row) {
             $username = $test_username;
@@ -111,7 +111,7 @@ function command_register () {
         $esc_test_username = mysqli_real_escape_string($db_connect, $test_username);
         $sql = "SELECT * FROM `user` WHERE `username`='$esc_test_username'";
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         $username_row = mysqli_fetch_assoc($res);
         if (!$username_row) {
             $username = $test_username;
@@ -130,7 +130,7 @@ function command_register () {
         $esc_test_email = mysqli_real_escape_string($db_connect, $test_email);
         $sql = "SELECT * FROM `contact` WHERE `email`='$esc_test_email'";
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         $email_row = mysqli_fetch_assoc($res);
         if (!$email_row) {
             $email = $test_email;

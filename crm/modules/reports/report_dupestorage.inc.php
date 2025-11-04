@@ -50,7 +50,7 @@ function get_dupe_storage () {
     ORDER BY cid;";
     global $db_connect;
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
  
     $dupes=array();
     $row = mysqli_fetch_assoc($res);

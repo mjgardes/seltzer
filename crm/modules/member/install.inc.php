@@ -40,7 +40,7 @@ function member_install($old_revision = 0) {
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         // Create membership table
         $sql = '
             CREATE TABLE IF NOT EXISTS `membership` (
@@ -53,7 +53,7 @@ function member_install($old_revision = 0) {
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         // Create plan table
         $sql = '
             CREATE TABLE IF NOT EXISTS `plan` (
@@ -66,7 +66,7 @@ function member_install($old_revision = 0) {
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         // Create default permissions
         $roles = array(
             '1' => 'authenticated'
@@ -88,7 +88,7 @@ function member_install($old_revision = 0) {
                 foreach ($default_perms[$role] as $perm) {
                     $sql = "INSERT INTO `role_permission` (`rid`, `permission`) VALUES ('$rid', '$perm')";
                     $res = mysqli_query($db_connect, $sql);
-                    if (!$res) crm_error(mysqli_error($res));
+                    if (!$res) crm_error(mysqli_error($db_connect));
                 }
             }
         }
@@ -102,7 +102,7 @@ function member_install($old_revision = 0) {
             ;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         $sql = '
             UPDATE contact, member
             SET member.emergencyName=contact.emergencyName
@@ -110,7 +110,7 @@ function member_install($old_revision = 0) {
             WHERE member.cid=contact.cid;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         $sql = '
             ALTER TABLE `contact`
               DROP column `emergencyName`
@@ -118,7 +118,7 @@ function member_install($old_revision = 0) {
             ;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
     }
     if ($old_revision < 5) {
         // Alter member table
@@ -128,7 +128,7 @@ function member_install($old_revision = 0) {
             ;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
     }
     if ($old_revision < 6) {
         // Set default permissions
@@ -155,7 +155,7 @@ function member_install($old_revision = 0) {
                         INSERT INTO `role_permission` (`rid`, `permission`) VALUES ('$esc_rid', '$esc_perm')
                     ";
                     $res = mysqli_query($db_connect, $sql);
-                    if (!$res) crm_error(mysqli_error($res));
+                    if (!$res) crm_error(mysqli_error($db_connect));
                 }
             }
         }

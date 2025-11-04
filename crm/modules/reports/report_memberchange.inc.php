@@ -47,7 +47,7 @@ function memberchange_query ($type, $from, $to) {
     ";
     global $db_connect;
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
 
     $row = mysqli_fetch_assoc($res);
     while (!empty($row)) {

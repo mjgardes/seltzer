@@ -59,7 +59,7 @@ function mentor_install($old_revision = 0) {
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         // Set default permissions on install/upgrade
         $roles = array(
             '1' => 'authenticated'
@@ -77,7 +77,7 @@ function mentor_install($old_revision = 0) {
         ('3', 'mentor_edit'),
         ('3', 'mentor_delete')";
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         
     }
 }
@@ -191,7 +191,7 @@ function mentor_data ($opts = array()) {
     //TODO: specify an order? (ORDER BY... ASC)
     
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));    
+    if (!$res) crm_error(mysqli_error($db_connect));    
     
     // Store data in mentorships array
     $mentorships = array();
@@ -581,7 +581,7 @@ function command_mentor_add() {
         VALUES
         ('$esc_post[cid]', '$esc_post[mentor_cid]')";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     
     return crm_url('contact&cid=' . $_POST['cid'] . '#tab-mentor');
 }
@@ -617,7 +617,7 @@ function command_mentor_update() {
         `slot`='$esc_post[slot]'
         WHERE `kid`='$esc_post[kid]'";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     
     return crm_url('contact&cid=' . $esc_post['cid'] . '#tab-mentor');
 }
@@ -641,7 +641,7 @@ function command_mentor_delete() {
         DELETE FROM `mentor`
         WHERE `cid`='$esc_post[cid]' AND `mentor_cid`='$esc_post[mentor_cid]'";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     
     return crm_url('members');
 }
@@ -733,7 +733,7 @@ function mentor_install($old_revision = 0) {
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
         ';
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         // Set default permissions on install/upgrade
         $roles = array(
             '1' => 'authenticated'
@@ -751,7 +751,7 @@ function mentor_install($old_revision = 0) {
         ('3', 'mentor_edit'),
         ('3', 'mentor_delete')";
         $res = mysqli_query($db_connect, $sql);
-        if (!$res) crm_error(mysqli_error($res));
+        if (!$res) crm_error(mysqli_error($db_connect));
         
     }
 }
@@ -865,7 +865,7 @@ function mentor_data ($opts = array()) {
     //TODO: specify an order? (ORDER BY... ASC)
     
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));    
+    if (!$res) crm_error(mysqli_error($db_connect));    
     
     // Store data in mentorships array
     $mentorships = array();
@@ -1256,7 +1256,7 @@ function command_mentor_add() {
         ('$esc_post[cid]', '$esc_post[mentor_cid]')
     ";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     
     return crm_url('contact&cid=' . $_POST['cid'] . '#tab-mentor');
 }
@@ -1294,7 +1294,7 @@ function command_mentor_update() {
         WHERE `kid`='$esc_post[kid]'
     ";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     
     return crm_url('contact&cid=' . $esc_post['cid'] . '#tab-mentor');
 }
@@ -1319,7 +1319,7 @@ function command_mentor_delete() {
         WHERE `cid`='$esc_post[cid]' AND `mentor_cid`='$esc_post[mentor_cid]'
     ";
     $res = mysqli_query($db_connect, $sql);
-    if (!$res) crm_error(mysqli_error($res));
+    if (!$res) crm_error(mysqli_error($db_connect));
     
     return crm_url('members');
 }
