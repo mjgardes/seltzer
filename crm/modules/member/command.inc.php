@@ -555,8 +555,6 @@ function command_member_import () {
         // Save to database
         $contact = contact_save($contact);
         
-        $esc_cid = mysqli_real_escape_string($db_connect, $cid);
-        
         // Notify admins
         $from = "\"$config_org_name\" <$config_email_from>";
         $headers = "From: $from\r\nContent-Type: text/html; charset=ISO-8859-1\r\n";
