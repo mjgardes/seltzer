@@ -26,7 +26,7 @@
  * hook_data_alter() to allow modules to alter the data.
  * @param $type The type of data.
  * @param $opts An associative array of options.
- * @return An array of data structures.
+ * @return array An array of data structures.
  */
 function crm_get_data ($type, $opts = array()) {
     // Get the base data
