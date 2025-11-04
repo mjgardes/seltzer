@@ -155,7 +155,7 @@ function theme_page ($page_name, $options = array()) {
     foreach ($data as $tab => $tab_data) {
         
         // Skip special keys
-        if ($tab{0} === '#') {
+        if ($tab[0] === '#') {
             continue;
         }
         
