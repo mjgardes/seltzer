@@ -74,7 +74,7 @@ function csv_parse ($content, $row_terminate = "\n", $field_terminate = ",", $fi
         if ($char == $field_escape) {
             // Escaped character
             $index++;
-            $field .= $content[$index};
+            $field .= $content[$index];
         } else if ($char == $field_quote) {
             if ($is_quoted) {
                 // We've reached the end of a quoted field
