@@ -132,8 +132,8 @@ function secrets_add ($secret) {
         $name = $secret['name'];
         $esc_name = mysqli_real_escape_string($db_connect, $secret['name']);
         $esc_value = mysqli_real_escape_string($db_connect, $secret['value']);
-        if ( preg_match('/\s/',$esc_name) || preg_match('/\s/',$esc_value) ) {
-            message_register('Whitespace not allowed in Name or Value.');
+        if ( preg_match('/\s/',$esc_name) {
+            message_register('Whitespace not allowed in Name.');
             return array();
         }
         $sql = "INSERT INTO variable (name, value) ";

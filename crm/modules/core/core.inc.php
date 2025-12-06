@@ -39,7 +39,6 @@ function core_install ($old_revision = 0) {
         $sql = 'SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";';
         $res = mysqli_query($db_connect, $sql);
         if (!$res) crm_error(mysqli_error($db_connect));
-
         $sql = '
             CREATE TABLE IF NOT EXISTS `module` (
                 `did` MEDIUMINT(8) unsigned NOT NULL AUTO_INCREMENT,

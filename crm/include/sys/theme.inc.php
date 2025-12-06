@@ -39,7 +39,7 @@ function path_to_theme() {
  * Additional parameters will be passed on to the theme handler.
  *
  * @param $element The element to theme.
- * @return The themed html string for the specified element.
+ * @return string The themed html string for the specified element.
 */
 function theme () {
 

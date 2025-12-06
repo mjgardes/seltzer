@@ -291,7 +291,6 @@ function command_module_install () {
     ";
     $res = mysqli_query($db_connect, $sql);
     if (!$res) crm_error(mysqli_error($db_connect));
-
     message_register(title() . " " . crm_version() . ' has been installed.');
     message_register('You may log in as user "admin"');
     return crm_url('login');
@@ -373,7 +372,7 @@ function module_invoke_api ($type, $entity, $op) {
     $type = array_shift($args);
     $modules = module_list();
     foreach ($modules as $module) {
-        $hook = "${module}_${type}_api";
+        $hook = "{$module}_{$type}_api";
         if (function_exists($hook)) {
             $entity = call_user_func_array($hook, $args);
             if (empty($entity)) {

@@ -23,7 +23,7 @@
 /**
  * Normalize line endings.  Converts all line endings to UNIX (\n) style.
  * @param $content
- * @return The $content string will all line endings converted to "\n".
+ * @return string The $content string will all line endings converted to "\n".
  */
 function csv_normalize ($content) {
     $content = remove_utf8_bom($content);

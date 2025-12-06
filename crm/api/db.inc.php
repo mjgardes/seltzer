@@ -9,7 +9,7 @@ $crm_root = realpath(dirname(__FILE__) . '/..');
 require_once($crm_root . '/include/crm.inc.php');
 
 // split the config_db_host since mysqli has different formatting
-list($mysqli_host, $mysqli_socket) = split(":",$conf);
+list($mysqli_host, $mysqli_socket) =explode(":",$conf);
 
 // Create the DB connection for SQL queries
 $con = mysqli_connect($mysqli_host,$config_db_user,$config_db_password,$config_db_db,null,$mysqli_socket);

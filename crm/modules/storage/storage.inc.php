@@ -296,7 +296,7 @@ function storage_add ($plot) {
         $sql .="VALUES ('" . $esc_pid . "', '" . $esc_desc . "', '" . $esc_reapdate . "', '" . $esc_reapmonth . "') ";
         $res = mysqli_query($db_connect, $sql);
         if (!$res) {
-            message_register('ERROR: ' . mysqli_error($res));
+            message_register('ERROR: ' . mysqli_error($db_connect));
         } else {
             $plot['action'] = 'Add';
             storage_log($plot);
@@ -353,7 +353,7 @@ function storage_edit ($opts) {
         $sql .= "WHERE pid = '" . $esc_pid . "' ";
         $res = mysqli_query($db_connect, $sql);
         if (!$res) {
-           message_register('SQL: ' . $sql . '<br>ERROR: ' . mysqli_error($res));
+           message_register('SQL: ' . $sql . '<br>ERROR: ' . mysqli_error($db_connect));
         } else {
             if (!array_key_exists('action',$opts)) { $opts['action'] = 'Edit'; }
             storage_log($opts);
@@ -445,7 +445,7 @@ function storage_log ($opts) {
         // if (!$res) crm_error(mysqli_error($db_connect));
         // message_register('Secret updated');
         if (!$res) {
-            message_register('SQL: ' . $sql . '<br>ERROR: ' . mysqli_error($res));
+            message_register('SQL: ' . $sql . '<br>ERROR: ' . mysqli_error($db_connect));
         // } else {
         //     message_register('Storage Log updated');
         }
